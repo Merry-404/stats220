@@ -1,0 +1,87 @@
+---
+title: My dynamic report
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+library(tidyverse)
+```
+
+```{css}
+body {
+  background-color: lightblue;
+}
+
+h2 {
+  color: white;
+  text-align: center;
+}
+
+p {
+  font-family: verdana;
+  font-size: 20px;
+}
+```
+
+## Gaming preference and playing time questionaire
+
+We are interested in the video game prefrences of the university of auckland students.
+
+The data are collected from UOA students and we only collected the students' favourite types of games(such as csgo, valorant, league of legends and .etc) and the average times that each respondents playing video games per day.
+
+We want to analyse what is the most popular game and the average time that people spend on playing video games nowadays.
+
+```{r}
+
+#read in the data
+
+logged_data=read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vRZZJ7VfUAePJsnLcaLKRYmPV706DJoafeH1zUKq9DJwcbD1lY5igxyz5uAC0l7iJuHXJpnuJsO1aln/pub?output=csv')
+
+# change the column names
+
+latest_data = rename(logged_data, 'prefer_game'=2, 'time_per_day'=3)
+
+
+
+
+
+
+```
+
+```{r}
+# run some summary on outputs
+paste('From the output of the questionaire, we have', length(latest_data$time_per_day), 'responses.')
+paste('From the output of the questionaire, the candidates play', mean(latest_data$time_per_day), 'hours of video games on average.')
+paste('From the output of the questionaire, the candidates play a maximum of', max(latest_data$time_per_day), 'hours of video games on average.')
+
+paste('From the output of the questionaire, the candidates play a minimum of', min(latest_data$time_per_day), 'hours of video games on average.')
+
+
+
+```
+
+
+```{r}
+# draw the plots
+
+latest_data %>%
+  ggplot() +
+  geom_bar(aes(x = prefer_game)) +
+  labs(title = "Types of games distribution",
+       x = "types of games",
+       y = "Counts")
+
+
+```
+
+
+```{r}
+latest_data %>%
+  ggplot() +
+  geom_bar(aes(x = time_per_day, fill = prefer_game)) +
+  labs(title = "Playing duration distribution by different games",
+       x = "time (per day in hours)",
+       y = "Counts")
+```
+
